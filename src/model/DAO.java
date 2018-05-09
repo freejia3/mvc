@@ -35,7 +35,7 @@ public class DAO {
 	//totalCount() -총글수 반환
 	public int totalCount() {
 		try {
-			sql = "select count(*) from mvcb";
+			sql = "select count(*) from smvcboard";
 			ptmt = con.prepareStatement(sql);
 			rs = ptmt.executeQuery();
 			rs.next();
@@ -55,7 +55,7 @@ public class DAO {
 
 		sql = "select * from "
 				+"(select rownum rnum, tt.* from "
-				+"(select * from mvcb order by gid desc, seq) tt) "
+				+"(select * from smvcboard order by gid desc, seq) tt) "
 				+"where rnum >= ? and rnum <= ?";
 		try {
 			ptmt = con.prepareStatement(sql);
@@ -89,7 +89,7 @@ public class DAO {
 	public VO detail(int id) {
 
 		try {
-			sql = "select * from mvcb where id = ?";
+			sql = "select * from smvcboard where id = ?";
 			ptmt = con.prepareStatement(sql);
 			ptmt.setInt(1, id);
 			rs = ptmt.executeQuery();
@@ -116,9 +116,9 @@ public class DAO {
 
 	//insert
 	public int insert(VO vo) {
-		sql = "insert into mvcb "
+		sql = "insert into smvcboard "
 				+ "(id, gid, seq, lev, cnt, reg_date, pname, pw, title, content, upfile) values"
-				+ "(mvcb_seq.nextval, mvcb_seq.nextval, 0, 0, -1, sysdate, ?, ?, ?, ?, ?)";
+				+ "(smvcboard_seq.nextval, smvcboard_seq.nextval, 0, 0, -1, sysdate, ?, ?, ?, ?, ?)";
 		try {
 			ptmt = con.prepareStatement(sql);
 			ptmt.setString(1, vo.getPname());
@@ -128,7 +128,7 @@ public class DAO {
 			ptmt.setString(5, vo.getUpfile());
 			ptmt.executeUpdate();
 
-			sql = "select max(id) from mvcb";
+			sql = "select max(id) from smvcboard";
 			ptmt = con.prepareStatement(sql);
 			rs = ptmt.executeQuery();
 			rs.next();
@@ -146,7 +146,7 @@ public class DAO {
 	public void addCount(int id) {
 
 		try {
-			sql = "update mvcb set cnt = cnt+1 where id = ?";
+			sql = "update smvcboard set cnt = cnt+1 where id = ?";
 			ptmt = con.prepareStatement(sql);
 			ptmt.setInt(1, id);
 			ptmt.executeUpdate();
@@ -161,7 +161,7 @@ public class DAO {
 	//sch - id, pw 입력받고 upfile 리턴
 	public VO sch(VO vo) {
 		try {
-			sql = "select * from mvcb where id = ? and pw =?";
+			sql = "select * from smvcboard where id = ? and pw =?";
 
 			ptmt = con.prepareStatement(sql);
 			ptmt.setInt(1, vo.getId());
@@ -184,7 +184,7 @@ public class DAO {
 	public void delete(int id) {
 
 		try {
-			sql = "delete * from mvcb where id = ?";
+			sql = "delete * from smvcboard where id = ?";
 			ptmt = con.prepareStatement(sql);
 			ptmt.setInt(1, id);
 			ptmt.executeUpdate();
@@ -198,7 +198,7 @@ public class DAO {
 
 	//modify
 	public void modify(VO vo) {
-		sql = "update mvcb set pname =?,  title=?, content=?, upfile=? where id =?";
+		sql = "update smvcboard set pname =?,  title=?, content=?, upfile=? where id =?";
 		try {
 			ptmt = con.prepareStatement(sql);
 			ptmt.setString(1, vo.getPname());
@@ -220,7 +220,7 @@ public class DAO {
 	//fileDelete-파일만 삭제
 	public void fileDelete(int id) {
 		try {
-			sql = "update mvcb set upfile = null where id = ?";
+			sql = "update smvcboard set upfile = null where id = ?";
 			ptmt = con.prepareStatement(sql);
 			ptmt.setInt(1, id);
 			ptmt.executeUpdate();
@@ -239,16 +239,16 @@ public class DAO {
 		try {
 			VO ori = detail(vo.id);
 			//기존 답글들에 대한 seq 처리
-			sql = "update mvcb set seq = seq + 1 where gid=? and seq > ?";
+			sql = "update smvcboard set seq = seq + 1 where gid=? and seq > ?";
 			ptmt = con.prepareStatement(sql);
 			ptmt.setInt(1, ori.getGid());
 			ptmt.setInt(2, ori.getSeq());
 			ptmt.executeUpdate();
 
 			//insert
-			sql = "insert into mvcb "
+			sql = "insert into smvcboard "
 					+ "(id, gid, seq, lev, cnt, reg_date, pname, title, pw, content) "
-					+ "values (mvcb_seq.nextval, ?, ?, ?, -1, sysdate, ?, ?, ?, ?)";
+					+ "values (smvcboard_seq.nextval, ?, ?, ?, -1, sysdate, ?, ?, ?, ?)";
 			ptmt = con.prepareStatement(sql);
 			ptmt.setInt(1, ori.getGid());
 			ptmt.setInt(2, ori.getSeq()+1);
@@ -260,7 +260,7 @@ public class DAO {
 			ptmt.executeUpdate();
 
 			//select id
-			sql = "select max(id) from mvcb";
+			sql = "select max(id) from smvcboard";
 			ptmt = con.prepareStatement(sql);
 			rs = ptmt.executeQuery();
 			rs.next();
