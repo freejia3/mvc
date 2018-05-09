@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import model.Action;
 import model.ActionData;
 // 지아아아아아아아아아아아아아아아아아아아아아아아
+// 1조화이팅~~~~~~~~~~~~~~~~~~~~
 /**
  * Servlet implementation class F_Controller
  */
