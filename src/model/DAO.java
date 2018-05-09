@@ -20,7 +20,7 @@ public class DAO {
 	public DAO() {
 		try {
 
-			///////////////////////////////
+			//안뇽 또 수정이닷
 			Context init = new InitialContext();
 			DataSource ds = (DataSource)init.lookup("java:comp/env/oooo");
 			con = ds.getConnection();
